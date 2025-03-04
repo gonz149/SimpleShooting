@@ -1,0 +1,66 @@
+.svn/
+*.svn-base
+
+# ============= #
+# Graphics Data	#
+# ============= #
+Graphics/
+
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+Package/
+UnityPackageManager/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+.vs/
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# ============ #
+# for others   #
+# ============ #
+
+*.log #log files, for some plugins
+*.pyc #python bytecode cache, for some plugins.
+sysinfo.txt #Unity3D Generated File On Crash Reports
+
+# ============ #
+# Gohan        #
+# ============ #
+
+# tmp
+*.mov
+Documents/SS/
+_Build/
+Tool/log/
+
+*.zip
+*.rar
+*.unitypackage
