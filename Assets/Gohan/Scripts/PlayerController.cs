@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
-    // Input Systemからの発射入力イベントハンドラ
-    public void OnFire(InputAction.CallbackContext context)
+    // Input Systemからの発射入力イベントハンドラ (OnFireからOnAttackに変更)
+    public void OnAttack(InputAction.CallbackContext context)
     {
         if (context.performed && Time.time >= nextFireTime)
         {
