@@ -23,6 +23,6 @@ public class PlayerController : MonoBehaviour
     {
         // X軸方向のみ移動
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, 0f);
-        rb.velocity = moveDirection * moveSpeed;
+        rb.linearVelocity = moveDirection * moveSpeed;
     }
 }
