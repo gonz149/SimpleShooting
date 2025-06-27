@@ -20,4 +20,15 @@ public class Bullet : MonoBehaviour
         // 一定時間後に自身を破壊
         Destroy(gameObject, lifeTime);
     }
+
+    // 当たり判定
+    void OnCollisionEnter(Collision collision)
+    {
+        // 衝突したオブジェクトが「Enemy」タグを持っていたら
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(collision.gameObject); // 敵を破壊
+            Destroy(gameObject); // 弾を破壊
+        }
+    }
 }
