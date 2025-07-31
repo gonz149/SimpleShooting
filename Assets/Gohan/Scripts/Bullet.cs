@@ -24,11 +24,28 @@ public class Bullet : MonoBehaviour
     // 当たり判定
     void OnCollisionEnter(Collision collision)
     {
-        // 衝突したオブジェクトが「Enemy」タグを持っていたら
-        if (collision.gameObject.CompareTag("Enemy"))
+        // 衝突したオブジェクトのタグを取得
+        string collidedTag = collision.gameObject.tag;
+
+        // この弾がプレイヤーの弾の場合
+        if (CompareTag("PlayerBullet"))
         {
-            Destroy(collision.gameObject); // 敵を破壊
-            Destroy(gameObject); // 弾を破壊
+            if (collidedTag == "Enemy")
+            {
+                Destroy(collision.gameObject); // 敵を破壊
+                Destroy(gameObject); // 弾を破壊
+            }
+        }
+        // この弾が敵の弾の場合
+        else if (CompareTag("EnemyBullet"))
+        {
+            if (collidedTag == "Player")
+            {
+                Destroy(collision.gameObject); // プレイヤーを破壊
+                Destroy(gameObject); // 弾を破壊
+            }
+            // 敵の弾が敵に当たった場合は何もしない
+            // else if (collidedTag == "Enemy") { /* 何もしない */ }
         }
     }
 }
