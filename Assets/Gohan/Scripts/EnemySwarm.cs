@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 public class EnemySwarm : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 1f; // 集団の移動速度
-    [SerializeField] private float moveDistance = 0.5f; // 一歩進む距離
-    [SerializeField] private float moveInterval = 1f; // 移動間隔
-    [SerializeField] private float minX = -8f; // 移動範囲の左端
-    [SerializeField] private float maxX = 8f; // 移動範囲の右端
+    [SerializeField] float moveSpeed = 1f; // 集団の移動速度
+    [SerializeField] float moveDistance = 0.5f; // 一歩進む距離
+    [SerializeField] float moveInterval = 1f; // 移動間隔
+    [SerializeField] float minX = -8f; // 移動範囲の左端
+    [SerializeField] float maxX = 8f; // 移動範囲の右端
 
-    private bool movingRight = true; // 右に移動中か
-    private float nextMoveTime; // 次の移動時間
+    bool movingRight = true; // 右に移動中か
+    float nextMoveTime; // 次の移動時間
 
     void Start()
     {

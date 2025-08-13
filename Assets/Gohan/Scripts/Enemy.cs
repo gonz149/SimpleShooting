@@ -20,14 +20,14 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Health")]
     [SerializeField] private float maxHealth = 1f;
     
-    private float currentHealth;
-    private float nextFireTime;
-    private IWeaponSystem weapon;
-    private ITargetProvider target;
+    float currentHealth;
+    float nextFireTime;
+    IWeaponSystem weapon;
+    ITargetProvider target;
 
     public bool IsDestroyed => currentHealth <= 0;
 
-    private void Awake()
+    void Awake()
     {
         currentHealth = maxHealth;
         
@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
     
-    private void SetupEnemyWeaponSystem(WeaponSystem weaponComp)
+    void SetupEnemyWeaponSystem(WeaponSystem weaponComp)
     {
         // EnemyBulletPrefabの設定（Inspectorで設定されたPrefabを使用）
         if (enemyBulletPrefab != null)
@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour, IDamageable
         fireRateField?.SetValue(weaponComp, fireRate);
     }
 
-    private void Start()
+    void Start()
     {
         nextFireTime = Time.time + Random.Range(0.5f, fireRate);
         
@@ -98,7 +98,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (Time.time >= nextFireTime && weapon != null && weapon.CanFire)
         {
@@ -121,7 +121,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
-    private void DestroyEnemy()
+    void DestroyEnemy()
     {
         // イベント通知などの処理をここに追加可能
         Destroy(gameObject);

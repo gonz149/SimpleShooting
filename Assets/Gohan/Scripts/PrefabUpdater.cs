@@ -7,9 +7,9 @@ using UnityEngine;
 public class PrefabUpdater : MonoBehaviour
 {
     [Header("Auto-Update Settings")]
-    [SerializeField] private bool enableAutoUpdate = true;
+    [SerializeField] bool enableAutoUpdate = true;
     
-    private void Awake()
+    void Awake()
     {
         if (!enableAutoUpdate) return;
         
@@ -17,7 +17,7 @@ public class PrefabUpdater : MonoBehaviour
         UpdateEnemyComponents();
     }
     
-    private void UpdatePlayerComponents()
+    void UpdatePlayerComponents()
     {
         if (CompareTag("Player"))
         {
@@ -64,7 +64,7 @@ public class PrefabUpdater : MonoBehaviour
         }
     }
     
-    private void UpdateEnemyComponents()
+    void UpdateEnemyComponents()
     {
         if (CompareTag("Enemy"))
         {

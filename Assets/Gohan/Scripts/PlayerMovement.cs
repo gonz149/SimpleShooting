@@ -6,14 +6,14 @@ using UnityEngine;
 /// </summary>
 public class PlayerMovement : MonoBehaviour, IMovement
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] float moveSpeed = 5f;
     
-    private Rigidbody rb;
-    private Vector3 currentVelocity;
+    Rigidbody rb;
+    Vector3 currentVelocity;
 
     public Vector3 CurrentVelocity => currentVelocity;
 
-    private void Awake()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }

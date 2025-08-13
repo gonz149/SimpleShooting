@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab; // 敵のプレハブ
-    [SerializeField] private int rows = 5; // 敵の行数
-    [SerializeField] private int columns = 10; // 敵の列数
-    [SerializeField] private float spacingX = 1.5f; // X軸方向の間隔
-    [SerializeField] private float spacingZ = 1.5f; // Z軸方向の間隔
+    [SerializeField] GameObject enemyPrefab; // 敵のプレハブ
+    [SerializeField] int rows = 5; // 敵の行数
+    [SerializeField] int columns = 10; // 敵の列数
+    [SerializeField] float spacingX = 1.5f; // X軸方向の間隔
+    [SerializeField] float spacingZ = 1.5f; // Z軸方向の間隔
 
     void Start()
     {

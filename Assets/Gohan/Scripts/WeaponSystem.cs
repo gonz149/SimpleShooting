@@ -6,12 +6,12 @@ using UnityEngine;
 /// </summary>
 public class WeaponSystem : MonoBehaviour, IWeaponSystem
 {
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 0.5f;
+    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Transform firePoint;
+    [SerializeField] float fireRate = 0.5f;
     
-    private float nextFireTime = 0f;
-    private Transform target;
+    float nextFireTime = 0f;
+    Transform target;
 
     public bool CanFire => Time.time >= nextFireTime;
 

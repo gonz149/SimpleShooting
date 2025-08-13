@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerTargetProvider : MonoBehaviour, ITargetProvider
 {
-    private Transform playerTransform;
-    private bool isPlayerCached = false;
+    Transform playerTransform;
+    bool isPlayerCached = false;
 
     public bool HasTarget => GetTarget() != null;
 

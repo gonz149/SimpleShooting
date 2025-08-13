@@ -13,12 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private WeaponSystem weaponSystem;
 
     // インターフェースでの参照（依存性逆転原則）
-    private IMovement movement;
-    private IWeaponSystem weapon;
+    IMovement movement;
+    IWeaponSystem weapon;
 
-    private Vector2 moveInput;
+    Vector2 moveInput;
 
-    private void Awake()
+    void Awake()
     {
         // 依存性の注入
         movement = playerMovement ?? GetComponent<PlayerMovement>();
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void SetupWeaponSystem(WeaponSystem weaponComp)
+    void SetupWeaponSystem(WeaponSystem weaponComp)
     {
         // FirePointを検索
         Transform firePoint = transform.Find("FirePoint");
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (movement != null)
         {
