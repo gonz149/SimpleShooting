@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private float fireRate = 2f;
     [SerializeField] private Vector3 fireOffset = new Vector3(0, 0, -0.5f);
     [SerializeField] private GameObject enemyBulletPrefab;
+    [SerializeField] private Transform firePoint;
     
     [Header("Dependencies")]
     [SerializeField] private WeaponSystem weaponSystem;
@@ -60,13 +61,24 @@ public class Enemy : MonoBehaviour, IDamageable
         // EnemyBulletPrefabの設定（Inspectorで設定されたPrefabを使用）
         if (enemyBulletPrefab != null)
         {
-            var field = typeof(WeaponSystem).GetField("bulletPrefab", 
+            var bulletField = typeof(WeaponSystem).GetField("bulletPrefab", 
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            field?.SetValue(weaponComp, enemyBulletPrefab);
+            bulletField?.SetValue(weaponComp, enemyBulletPrefab);
         }
         else
         {
             Debug.LogWarning("EnemyBulletPrefab is not assigned in Inspector for " + gameObject.name);
+        }
+        
+        // FirePointの設定（Inspectorで設定されたFirePointを使用、なければ自身のTransform）
+        Transform targetFirePoint = firePoint != null ? firePoint : transform;
+        var firePointField = typeof(WeaponSystem).GetField("firePoint", 
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        firePointField?.SetValue(weaponComp, targetFirePoint);
+        
+        if (firePoint == null)
+        {
+            Debug.LogWarning("FirePoint is not assigned in Inspector for " + gameObject.name + ". Using enemy's transform as fallback.");
         }
         
         // FireRateの設定
