@@ -48,6 +48,48 @@
 - イベント駆動設計でコンポーネント間の疎結合を実現する
 - UnityのComponent Systemを活用した構成パターンを採用する
 
+#### 現在のアーキテクチャ
+
+**インターフェース設計**:
+- `IDamageable`: ダメージ処理専用（Interface Segregation）
+- `IWeaponSystem`: 武器システム専用
+- `IMovement`: 移動機能専用
+- `ITargetProvider`: ターゲット提供専用
+
+**コンポーネント構成**:
+- `PlayerController`: 入力処理と各システム調整（Single Responsibility）
+- `PlayerMovement`: プレイヤー移動制御のみ
+- `WeaponSystem`: 武器発射システム（再利用可能）
+- `Enemy`: 敵の行動制御（IDamageableを実装）
+- `PlayerTargetProvider`: プレイヤー検索ロジック
+
+**弾システム**:
+- `BaseBullet`: 弾の基底クラス（Open/Closed Principle）
+- `PlayerBullet`: プレイヤー弾（BaseBulletを継承）
+- `EnemyBullet`: 敵弾（BaseBulletを継承）
+
+**依存性管理**:
+- インターフェースへの依存（Dependency Inversion）
+- コンポーネント参照での依存性注入
+- 具象クラスに直接依存しない設計
+
+**推奨プレハブ構成**:
+```
+Player GameObject:
+├── PlayerMovement
+├── WeaponSystem
+├── PlayerController
+└── (IDamageableの実装)
+
+Enemy GameObject:
+├── WeaponSystem
+├── PlayerTargetProvider
+└── Enemy
+
+Bullet GameObject:
+└── PlayerBullet or EnemyBullet
+```
+
 ## テスト・ビルド
 
 ### 実行コマンド

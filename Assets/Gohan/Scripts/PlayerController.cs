@@ -1,20 +1,83 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // Input Systemを使用するために必要
+using UnityEngine.InputSystem;
 
+/// <summary>
+/// プレイヤーの統合制御
+/// Single Responsibility Principle: 入力処理と各システムの調整のみを担当
+/// Dependency Inversion Principle: インターフェースに依存
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f; // 移動速度
-    [SerializeField] private GameObject bulletPrefab; // 弾のプレハブ
-    [SerializeField] private Transform firePoint; // 弾の発射位置
-    [SerializeField] private float fireRate = 0.5f; // 発射間隔
-    private float nextFireTime = 0f; // 次の発射可能時間
+    [Header("Component References")]
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private WeaponSystem weaponSystem;
 
-    private Rigidbody rb;
-    private Vector2 moveInput; // Input Systemからの移動入力
+    // インターフェースでの参照（依存性逆転原則）
+    private IMovement movement;
+    private IWeaponSystem weapon;
+
+    private Vector2 moveInput;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        // 依存性の注入
+        movement = playerMovement ?? GetComponent<PlayerMovement>();
+        weapon = weaponSystem ?? GetComponent<WeaponSystem>();
+
+        // コンポーネントが見つからない場合は自動追加
+        if (movement == null)
+        {
+            Debug.Log("PlayerMovement component not found on " + gameObject.name + ". Adding automatically.");
+            var addedMovement = gameObject.AddComponent<PlayerMovement>();
+            movement = addedMovement;
+            playerMovement = addedMovement;
+        }
+        
+        if (weapon == null)
+        {
+            Debug.Log("WeaponSystem component not found on " + gameObject.name + ". Adding automatically.");
+            var addedWeapon = gameObject.AddComponent<WeaponSystem>();
+            weapon = addedWeapon;
+            weaponSystem = addedWeapon;
+            
+            // FirePointとBulletPrefabの自動設定
+            SetupWeaponSystem(addedWeapon);
+        }
+    }
+    
+    private void SetupWeaponSystem(WeaponSystem weaponComp)
+    {
+        // FirePointを検索
+        Transform firePoint = transform.Find("FirePoint");
+        if (firePoint != null)
+        {
+            // SerializedFieldのfirePointを設定するためにリフレクションを使用
+            var field = typeof(WeaponSystem).GetField("firePoint", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            field?.SetValue(weaponComp, firePoint);
+        }
+        
+        // BulletPrefabの設定（Assets/Gohan/Prefabs/Bullet.prefabを使用）
+        GameObject bulletPrefab = UnityEngine.Resources.Load<GameObject>("Gohan/Prefabs/Bullet");
+        if (bulletPrefab == null)
+        {
+            // Resourcesフォルダにない場合はAssetDatabaseで検索（Editor専用）
+            #if UNITY_EDITOR
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("Bullet t:GameObject", new[] {"Assets/Gohan/Prefabs"});
+            if (guids.Length > 0)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                bulletPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            }
+            #endif
+        }
+        
+        if (bulletPrefab != null)
+        {
+            var field = typeof(WeaponSystem).GetField("bulletPrefab", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            field?.SetValue(weaponComp, bulletPrefab);
+        }
     }
 
     // Input Systemからの移動入力イベントハンドラ
@@ -23,20 +86,21 @@ public class PlayerController : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
-    // Input Systemからの発射入力イベントハンドラ (OnFireからOnAttackに変更)
+    // Input Systemからの発射入力イベントハンドラ
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.performed && Time.time >= nextFireTime)
+        if (context.performed && weapon != null && weapon.CanFire)
         {
-            nextFireTime = Time.time + fireRate;
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            weapon.Fire();
         }
     }
 
     private void FixedUpdate()
     {
-        // X軸方向のみ移動
-        Vector3 moveDirection = new Vector3(moveInput.x, 0f, 0f);
-        rb.linearVelocity = moveDirection * moveSpeed;
+        if (movement != null)
+        {
+            Vector3 moveDirection = new Vector3(moveInput.x, 0f, 0f);
+            movement.Move(moveDirection);
+        }
     }
 }

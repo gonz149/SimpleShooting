@@ -8,7 +8,9 @@
       "Bash(git add:*)",
       "Bash(git push:*)",
       "mcp__UnityMCP__manage_scene",
-      "mcp__UnityMCP__execute_menu_item"
+      "mcp__UnityMCP__execute_menu_item",
+      "Bash(rm:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
