@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__UnityMCP__manage_editor",
+      "mcp__UnityMCP__manage_gameobject",
+      "mcp__UnityMCP__manage_asset",
+      "mcp__UnityMCP__read_console"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
