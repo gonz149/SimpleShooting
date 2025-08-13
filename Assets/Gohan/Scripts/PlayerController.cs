@@ -9,8 +9,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Component References")]
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private WeaponSystem weaponSystem;
+    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] WeaponSystem weaponSystem;
+    [SerializeField] GameObject playerBulletPrefab;
 
     // インターフェースでの参照（依存性逆転原則）
     IMovement movement;
@@ -41,42 +42,27 @@ public class PlayerController : MonoBehaviour
             weaponSystem = addedWeapon;
             
             // FirePointとBulletPrefabの自動設定
-            SetupWeaponSystem(addedWeapon);
+            SetupPlayerWeaponSystem(addedWeapon);
         }
     }
     
-    void SetupWeaponSystem(WeaponSystem weaponComp)
+    void SetupPlayerWeaponSystem(WeaponSystem weaponComp)
     {
         // FirePointを検索
         Transform firePoint = transform.Find("FirePoint");
         if (firePoint != null)
         {
-            // SerializedFieldのfirePointを設定するためにリフレクションを使用
-            var field = typeof(WeaponSystem).GetField("firePoint", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            field?.SetValue(weaponComp, firePoint);
+            WeaponSystemSetup.SetFirePoint(weaponComp, firePoint);
         }
         
-        // BulletPrefabの設定（Assets/Gohan/Prefabs/Bullet.prefabを使用）
-        GameObject bulletPrefab = UnityEngine.Resources.Load<GameObject>("Gohan/Prefabs/Bullet");
-        if (bulletPrefab == null)
+        // PlayerBulletPrefabの設定（YAGNI原則: Inspector設定のみに簡素化）
+        if (playerBulletPrefab != null)
         {
-            // Resourcesフォルダにない場合はAssetDatabaseで検索（Editor専用）
-            #if UNITY_EDITOR
-            string[] guids = UnityEditor.AssetDatabase.FindAssets("Bullet t:GameObject", new[] {"Assets/Gohan/Prefabs"});
-            if (guids.Length > 0)
-            {
-                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
-                bulletPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            }
-            #endif
+            WeaponSystemSetup.SetBulletPrefab(weaponComp, playerBulletPrefab);
         }
-        
-        if (bulletPrefab != null)
+        else
         {
-            var field = typeof(WeaponSystem).GetField("bulletPrefab", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            field?.SetValue(weaponComp, bulletPrefab);
+            Debug.LogWarning("PlayerBulletPrefab is not assigned in Inspector for " + gameObject.name);
         }
     }
 

@@ -8,17 +8,16 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable
 {
     [Header("Weapon Settings")]
-    [SerializeField] private float fireRate = 2f;
-    [SerializeField] private Vector3 fireOffset = new Vector3(0, 0, -0.5f);
-    [SerializeField] private GameObject enemyBulletPrefab;
-    [SerializeField] private Transform firePoint;
+    [SerializeField] float fireRate = 2f;
+    [SerializeField] GameObject enemyBulletPrefab;
+    [SerializeField] Transform firePoint;
     
     [Header("Dependencies")]
-    [SerializeField] private WeaponSystem weaponSystem;
-    [SerializeField] private PlayerTargetProvider targetProvider;
+    [SerializeField] WeaponSystem weaponSystem;
+    [SerializeField] PlayerTargetProvider targetProvider;
 
     [Header("Health")]
-    [SerializeField] private float maxHealth = 1f;
+    [SerializeField] float maxHealth = 1f;
     
     float currentHealth;
     float nextFireTime;
@@ -44,7 +43,7 @@ public class Enemy : MonoBehaviour, IDamageable
             weaponSystem = addedWeapon;
             
             // EnemyBulletPrefabの自動設定
-            SetupEnemyWeaponSystem(addedWeapon);
+            SetupWeaponSystem(addedWeapon);
         }
         
         if (target == null)
@@ -56,25 +55,21 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
     
-    void SetupEnemyWeaponSystem(WeaponSystem weaponComp)
+    void SetupWeaponSystem(WeaponSystem weaponComp)
     {
-        // EnemyBulletPrefabの設定（Inspectorで設定されたPrefabを使用）
+        // 共通ユーティリティを使用してDRY原則に準拠
         if (enemyBulletPrefab != null)
         {
-            var bulletField = typeof(WeaponSystem).GetField("bulletPrefab", 
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            bulletField?.SetValue(weaponComp, enemyBulletPrefab);
+            WeaponSystemSetup.SetBulletPrefab(weaponComp, enemyBulletPrefab);
         }
         else
         {
             Debug.LogWarning("EnemyBulletPrefab is not assigned in Inspector for " + gameObject.name);
         }
         
-        // FirePointの設定（Inspectorで設定されたFirePointを使用、なければ自身のTransform）
+        // FirePointの設定（なければ自身のTransform）
         Transform targetFirePoint = firePoint != null ? firePoint : transform;
-        var firePointField = typeof(WeaponSystem).GetField("firePoint", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        firePointField?.SetValue(weaponComp, targetFirePoint);
+        WeaponSystemSetup.SetFirePoint(weaponComp, targetFirePoint);
         
         if (firePoint == null)
         {
@@ -82,9 +77,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
         
         // FireRateの設定
-        var fireRateField = typeof(WeaponSystem).GetField("fireRate", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        fireRateField?.SetValue(weaponComp, fireRate);
+        WeaponSystemSetup.SetFireRate(weaponComp, fireRate);
     }
 
     void Start()
