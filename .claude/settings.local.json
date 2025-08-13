@@ -6,7 +6,9 @@
       "mcp__UnityMCP__manage_asset",
       "mcp__UnityMCP__read_console",
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "mcp__UnityMCP__manage_scene",
+      "mcp__UnityMCP__execute_menu_item"
     ],
     "deny": [],
     "ask": []

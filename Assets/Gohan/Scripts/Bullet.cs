@@ -44,8 +44,11 @@ public class Bullet : MonoBehaviour
                 Destroy(collision.gameObject); // プレイヤーを破壊
                 Destroy(gameObject); // 弾を破壊
             }
-            // 敵の弾が敵に当たった場合は何もしない
-            // else if (collidedTag == "Enemy") { /* 何もしない */ }
+            else if (collidedTag == "Enemy")
+            {
+                // 敵の弾が敵に当たった場合は何もしない（衝突を無視）
+                return;
+            }
         }
     }
 }

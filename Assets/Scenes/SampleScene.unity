@@ -436,6 +436,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1007021233}
   - component: {fileID: 1007021232}
+  - component: {fileID: 1007021234}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -456,8 +457,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2286558018758260650, guid: 5732dbdb3d80f4e419f6d428f1692bef, type: 3}
-  rows: 5
-  columns: 10
+  rows: 2
+  columns: 4
   spacingX: 1.5
   spacingZ: 1.5
 --- !u!4 &1007021233
@@ -475,6 +476,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1007021234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007021231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57ebd050cdcd63f46ab6d23a2a33c888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
+  moveDistance: 0.5
+  moveInterval: 1
+  minX: -8
+  maxX: 8
 --- !u!1001 &44276982674217806
 PrefabInstance:
   m_ObjectHideFlags: 0
