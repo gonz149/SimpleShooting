@@ -4,7 +4,9 @@
       "mcp__UnityMCP__manage_editor",
       "mcp__UnityMCP__manage_gameobject",
       "mcp__UnityMCP__manage_asset",
-      "mcp__UnityMCP__read_console"
+      "mcp__UnityMCP__read_console",
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
