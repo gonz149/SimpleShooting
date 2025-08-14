@@ -21,11 +21,6 @@ public class EnemyBullet : BaseBullet
             {
                 damageable.TakeDamage(damage);
             }
-            else
-            {
-                // 従来の方式との互換性のため
-                Destroy(hitObject);
-            }
             
             DestroyBullet();
         }

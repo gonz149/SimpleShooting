@@ -6,21 +6,29 @@ using UnityEngine.InputSystem;
 /// Single Responsibility Principle: 入力処理と各システムの調整のみを担当
 /// Dependency Inversion Principle: インターフェースに依存
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [Header("Component References")]
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] WeaponSystem weaponSystem;
     [SerializeField] GameObject playerBulletPrefab;
 
+    [Header("Health")]
+    [SerializeField] float maxHealth = 3f;
+
     // インターフェースでの参照（依存性逆転原則）
     IMovement movement;
     IWeaponSystem weapon;
 
     Vector2 moveInput;
+    float currentHealth;
+
+    public bool IsDestroyed => currentHealth <= 0;
 
     void Awake()
     {
+        currentHealth = maxHealth;
+        
         // 依存性の注入
         movement = playerMovement ?? GetComponent<PlayerMovement>();
         weapon = weaponSystem ?? GetComponent<WeaponSystem>();
@@ -40,9 +48,12 @@ public class PlayerController : MonoBehaviour
             var addedWeapon = gameObject.AddComponent<WeaponSystem>();
             weapon = addedWeapon;
             weaponSystem = addedWeapon;
-            
-            // FirePointとBulletPrefabの自動設定
-            SetupPlayerWeaponSystem(addedWeapon);
+        }
+        
+        // 既存・新規に関わらず武器システムをセットアップ
+        if (weaponSystem != null)
+        {
+            SetupPlayerWeaponSystem(weaponSystem);
         }
     }
     
@@ -53,12 +64,19 @@ public class PlayerController : MonoBehaviour
         if (firePoint != null)
         {
             WeaponSystemSetup.SetFirePoint(weaponComp, firePoint);
+            Debug.Log("FirePoint set for " + gameObject.name);
+        }
+        else
+        {
+            Debug.LogWarning("FirePoint not found for " + gameObject.name + ". Using transform as fallback.");
+            WeaponSystemSetup.SetFirePoint(weaponComp, transform);
         }
         
-        // PlayerBulletPrefabの設定（YAGNI原則: Inspector設定のみに簡素化）
+        // PlayerBulletPrefabの設定（公開メソッドを使用）
         if (playerBulletPrefab != null)
         {
-            WeaponSystemSetup.SetBulletPrefab(weaponComp, playerBulletPrefab);
+            weaponComp.SetBulletPrefab(playerBulletPrefab);
+            Debug.Log("PlayerBulletPrefab set for " + gameObject.name + ": " + playerBulletPrefab.name);
         }
         else
         {
@@ -88,5 +106,23 @@ public class PlayerController : MonoBehaviour
             Vector3 moveDirection = new Vector3(moveInput.x, 0f, 0f);
             movement.Move(moveDirection);
         }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        Debug.Log($"{gameObject.name} took {damage} damage. Current health: {currentHealth}");
+        
+        if (currentHealth <= 0)
+        {
+            DestroyPlayer();
+        }
+    }
+
+    void DestroyPlayer()
+    {
+        // ゲームオーバー処理やイベント通知などの処理をここに追加可能
+        Debug.Log("Player destroyed!");
+        Destroy(gameObject);
     }
 }

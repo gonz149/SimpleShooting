@@ -57,10 +57,11 @@ public class Enemy : MonoBehaviour, IDamageable
     
     void SetupWeaponSystem(WeaponSystem weaponComp)
     {
-        // 共通ユーティリティを使用してDRY原則に準拠
+        // BulletPrefabの設定（公開メソッドを使用）
         if (enemyBulletPrefab != null)
         {
-            WeaponSystemSetup.SetBulletPrefab(weaponComp, enemyBulletPrefab);
+            weaponComp.SetBulletPrefab(enemyBulletPrefab);
+            Debug.Log("EnemyBulletPrefab set for " + gameObject.name + ": " + enemyBulletPrefab.name);
         }
         else
         {
@@ -76,8 +77,8 @@ public class Enemy : MonoBehaviour, IDamageable
             Debug.LogWarning("FirePoint is not assigned in Inspector for " + gameObject.name + ". Using enemy's transform as fallback.");
         }
         
-        // FireRateの設定
-        WeaponSystemSetup.SetFireRate(weaponComp, fireRate);
+        // FireRateの設定（公開メソッドを使用）
+        weaponComp.SetFireRate(fireRate);
     }
 
     void Start()
@@ -107,6 +108,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        Debug.Log($"{gameObject.name} took {damage} damage. Current health: {currentHealth}");
         
         if (currentHealth <= 0)
         {
@@ -117,6 +119,7 @@ public class Enemy : MonoBehaviour, IDamageable
     void DestroyEnemy()
     {
         // イベント通知などの処理をここに追加可能
+        Debug.Log($"{gameObject.name} destroyed!");
         Destroy(gameObject);
     }
 
