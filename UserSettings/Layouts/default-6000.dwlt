@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2574.4001
     height: 1285.6
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 7}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -1059,7 +1059,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 1cfbffff42a50000
+      m_ExpandedIDs: 1cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1185,7 +1185,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 64120000
     m_LastClickedID: 4708
-    m_ExpandedIDs: 0000000052a6000054a6000056a6000058a600005aa600005ca60000
+    m_ExpandedIDs: 0000000084a6000086a6000088a600008aa600008ca600008ea60000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1214,7 +1214,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000052a6000054a6000056a6000058a600005aa600005ca60000
+    m_ExpandedIDs: 0000000084a6000086a6000088a600008aa600008ca600008ea60000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
